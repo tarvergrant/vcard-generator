@@ -7,9 +7,6 @@ import DateInput from "./Components/DateInput";
 import UrlInput from "./Components/UrlInput";
 import NoteInput from "./Components/NoteInput";
 
-// Define the base URL for the generated links
-export const baseUrl = "https://tarvergrant.com/generate-vcard/";
-
 // Define the list of input fields (VCF typical fields)
 export const inputOptions = [
   { id: "fullName", label: "Full Name", component: TextInput },

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { baseUrl, inputOptions } from "./config"; // Import from config.js
+import { inputOptions } from "./config"; // Import from config.js
 
 export default function App() {
   // State for dynamically added inputs
@@ -10,6 +10,10 @@ export default function App() {
   const [generatedLink, setGeneratedLink] = useState(null);
   // State for button text
   const [buttonText, setButtonText] = useState("Copy");
+  // State for error handling
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const baseUrl = import.meta.env.VITE_VCARD_GENERATOR_URL;
 
   // Handle the selection of inputs to add
   const handleSelectInput = (e) => {
@@ -45,6 +49,19 @@ export default function App() {
   // Handle form submission with sorting by the original order
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    console.log(import.meta.env.VITE_VCARD_GENERATOR_URL);
+    // Check if there are any filled fields in formData
+    const hasFilledFields = Object.values(formData).some(
+      (value) => value !== "",
+    );
+
+    if (!hasFilledFields) {
+      setErrorMessage("Please fill in at least one field.");
+      return; // Exit early without generating the link
+    }
+
+    setErrorMessage(""); // Clear any previous error messages
 
     // Filter out any empty fields from formData
     const filteredData = Object.entries(formData)
@@ -125,6 +142,9 @@ export default function App() {
               />
             );
           })}
+
+          {/* Error Message */}
+          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
 
           {/* Submit Button */}
           {formFields.length > 0 && (
